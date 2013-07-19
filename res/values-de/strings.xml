@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="app_name">BenzinVerbrauch</string>
+    
+    <string name="general_save">Speichern</string>
+    <string name="general_cancel">Abbrechen</string>
+    <string name="general_delete">Löschen</string>
+    
+    <string name="context_rename">Umbenennen</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="action_add">Neuer Eintrag</string>
+    <string name="action_manageCars">Autos verwalten</string>
+    
+    <string name="showUsage_tab">Verbrauch</string>
+    <string name="showUsage_usageComplete">Durchschnittlicher Verbrauch (Gesamt):\n%.2f l/100km</string>
+    <string name="showUsage_usageLast">Durchschnittlicher Verbrauch (letztes Tanken):\n%.2f l/100km</string>
+    
+    <string name="listEntries_tab">Einträge</string>
+    
+    <string name="addEntry_date">Datum</string>
+    <string name="addEntry_km">Strecke (km)</string>
+    <string name="addEntry_fuelAmount">Benzinmenge (l)</string>
+    <string name="addEntry_price">Preis (Cent/l)</string>
+    <string name="addEntry_tankFull">Vollgetankt?</string>
+    <string name="addEntry_buttonCancel">Verwerfen</string>
+    <string name="addEntry_buttonDatepicker">Pick</string>
+    <string name="addEntry_errorEmptyFields">Bitte füllen Sie alle Felder aus.</string>
+    <string name="addEntry_errorDateFormat">Das Datum muss die in den Einstellungen gewählte Form haben.</string>
+    
+    <string name="calculateUsage_tab">Berechnen</string>
+    <string name="calculateUsage_distance">Strecke (km):</string>
+    <string name="calculateUsage_buttonCalculate">Berechnen</string>
+    <string name="calculateUsage_errorDistanceEmpty">Bitte geben Sie eine Strecke ein.</string>
+    <string name="calculateUsage_errorNoEntry">Damit der Verbrauch geschätzt werden kann, müssen Sie zuerst einen Eintrag anlegen.</string>
+    <string name="calculateUsage_calculatedUsage">Geschätzter Verbrauch: %.2f l</string>
+    <string name="calculateUsage_calculatedPrice">Geschätzter Preis: %.2f €</string>
+    
+    <string name="manageCars_chooseCar">Auto auswählen:</string>
+    <string name="manageCars_addCar">Auto hinzufügen:</string>
+    <string name="manageCars_currentCar">Aktuell gewähltes Auto: %s</string>
+    <string name="manageCars_newName">Neuer Name:</string>
+    <string name="manageCars_hintCarName">Name des Autos</string>
+    <string name="manageCars_errorCannotDelete">Dieses Auto kann nicht gelöscht werden.</string>
+    <string name="manageCars_confirmationDeleteCar">Wenn Sie das Auto löschen, dann werden alle damit verknüpften Einträge ebenfalls gelöscht! Sind Sie sicher, dass Sie das Auto löschen wollen?</string>
+    
+    <string name="prefDateFormat_title">Datumsformat</string>
+    <string name="prefDateFormat_dialogTitle">Datumsformat</string>
+    <string name="prefDateFormat_defaultValue">GERMAN</string>
+
+</resources>

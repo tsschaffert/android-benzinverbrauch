@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">FuelConsumption</string>
+    
+    <string name="general_save">Save</string>
+    <string name="general_cancel">Cancel</string>
+    <string name="general_delete">Delete</string>
+
+    <string name="context_delete">@string/general_delete</string>
+    <string name="context_rename">Rename</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_add">New entry</string>
+    <string name="action_manageCars">Manage cars</string>
+    
+    <string name="showUsage_tab">Consumption</string>
+    <string name="showUsage_usageComplete">Average Consumption (total):\n%.2f l/100km</string>
+    <string name="showUsage_usageLast">Average Consumption (last refuelling):\n%.2f l/100km</string>
+    
+    <string name="listEntries_tab">Entries</string>
+    
+    <string name="addEntry_date">Date</string>
+    <string name="addEntry_km">Distance (km)</string>
+    <string name="addEntry_fuelAmount">Fuel amount (l)</string>
+    <string name="addEntry_price">Price (Cent/l)</string>
+    <string name="addEntry_tankFull">Tank full?</string>
+    <string name="addEntry_buttonSave">@string/general_save</string>
+    <string name="addEntry_buttonCancel">@string/general_cancel</string>
+    <string name="addEntry_buttonDatepicker">Pick</string>
+    <string name="addEntry_errorEmptyFields">Please fill in all the blanks.</string>
+    <string name="addEntry_errorDateFormat">The date has an incorrect format.</string>
+    
+    <string name="calculateUsage_tab">Calculate</string>
+    <string name="calculateUsage_distance">Distance (km):</string>
+    <string name="calculateUsage_buttonCalculate">Calculate</string>
+    <string name="calculateUsage_errorDistanceEmpty">Please fill in a distance.</string>
+    <string name="calculateUsage_errorNoEntry">You need to make an entry in order to estimate your consumption.</string>
+    <string name="calculateUsage_calculatedUsage">Estimated consumption: %.2f l</string>
+    <string name="calculateUsage_calculatedPrice">Estimated price: %.2f €</string>
+    
+    <string name="manageCars_buttonSave">@string/general_save</string>
+    <string name="manageCars_buttonCancel">@string/general_cancel</string>
+    <string name="manageCars_buttonDelete">@string/general_delete</string>
+    <string name="manageCars_chooseCar">Select a car:</string>
+    <string name="manageCars_addCar">Add a car:</string>
+    <string name="manageCars_currentCar">Currently selected car: %s</string>
+    <string name="manageCars_newName">New name:</string>
+    <string name="manageCars_hintCarName">car name</string>
+    <string name="manageCars_errorCannotDelete">This car cannot be deleted.</string>
+    <string name="manageCars_confirmationDeleteCar">If you delete this car, linked entries will be deleted as well! Do you really want to delete the car?</string>
+    
+    <string name="prefDateFormat_key">prefDateFormat</string>
+    <string-array name="prefDateFormat_entries">
+        <item>yyyy-mm-dd</item>
+        <item>dd.mm.yyyy</item>
+        <item>d.m.yy</item>
+    </string-array>
+    <string-array name="prefDateFormat_values">
+        <item>DATABASE</item>
+        <item>GERMAN</item>
+        <item>GERMAN_SHORT</item>
+    </string-array>
+    <string name="prefDateFormat_title">Date format</string>
+    <string name="prefDateFormat_dialogTitle">Date format</string>
+    <string name="prefDateFormat_defaultValue">DATABASE</string>
+    
+    <string name="prefSelectedCar_key">SELECTED_CAR_ID</string>
+
+</resources>

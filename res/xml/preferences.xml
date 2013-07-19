@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+   <ListPreference
+        android:defaultValue="@string/prefDateFormat_defaultValue"
+        android:dialogTitle="@string/prefDateFormat_dialogTitle"
+        android:entries="@array/prefDateFormat_entries"
+        android:entryValues="@array/prefDateFormat_values"
+        android:key="@string/prefDateFormat_key"
+        android:title="@string/prefDateFormat_title" />
+
+</PreferenceScreen>
