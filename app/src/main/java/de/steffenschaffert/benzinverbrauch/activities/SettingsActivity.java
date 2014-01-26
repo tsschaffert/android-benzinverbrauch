@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 Steffen Schaffert
+ * Copyright (c) 2013, 2014 Steffen Schaffert
  * Released under the MIT license.
  * http://www.tss-stuff.de/benzinverbrauch/license
  */
@@ -18,7 +18,8 @@ public class SettingsActivity extends PreferenceActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		// Configure Action Bar if Android Version >= 3.0
+		// ActionBar and PreferenceActivity are not compatible in support lib, so no action bar for
+        // older Android versions
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			ActionBar actionBar = getActionBar();
 			actionBar.setHomeButtonEnabled(true);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 Steffen Schaffert
+ * Copyright (c) 2013, 2014 Steffen Schaffert
  * Released under the MIT license.
  * http://www.tss-stuff.de/benzinverbrauch/license
  */

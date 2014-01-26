@@ -1,22 +1,23 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tss="http://schemas.android.com/apk/res-auto" >
 
     <item
         android:id="@+id/action_add"
         android:orderInCategory="50"
-        android:showAsAction="always"
+        tss:showAsAction="always"
         android:title="@string/action_add"
         android:icon="@drawable/ic_action_add" />
     
     <item
         android:id="@+id/action_manageCars"
         android:orderInCategory="90"
-        android:showAsAction="never"
+        tss:showAsAction="never"
         android:title="@string/action_manageCars"/>
     
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
-        android:showAsAction="never"
+        tss:showAsAction="never"
         android:title="@string/action_settings"/>
 
 </menu>
