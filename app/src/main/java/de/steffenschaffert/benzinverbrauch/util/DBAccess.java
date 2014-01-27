@@ -151,8 +151,8 @@ public class DBAccess extends SQLiteOpenHelper {
 					"FROM "+Usage.TABLE_NAME+" " +
 					"WHERE "+Usage.COLUMN_NAME_FULL+"=1 " +
 					"AND "+Usage.COLUMN_NAME_FK_CAR+"=? " +
-					"ORDER BY "+Usage.COLUMN_NAME_DATE+" " +
-					"DESC LIMIT 1" +
+					"ORDER BY "+Usage.COLUMN_NAME_DATE+" DESC, " + Usage.COLUMN_NAME_ID + " DESC " +
+					"LIMIT 1" +
 				") " +
 				"AND "+Usage.COLUMN_NAME_FK_CAR+"=?";
 		
@@ -175,8 +175,8 @@ public class DBAccess extends SQLiteOpenHelper {
 				"FROM "+Usage.TABLE_NAME+" " +
 				"WHERE "+Usage.COLUMN_NAME_FULL+"=1 " +
 				"AND "+Usage.COLUMN_NAME_FK_CAR+"=? " +
-				"ORDER BY "+Usage.COLUMN_NAME_DATE+" " +
-				"DESC LIMIT 1";
+                "ORDER BY "+Usage.COLUMN_NAME_DATE+" DESC, " + Usage.COLUMN_NAME_ID + " DESC " +
+				"LIMIT 1";
 		Cursor c = this.db.rawQuery(sql, new String[]{ Long.toString(getSelectedCarId()) });
 		
 		// Return 0 if no entry in DB
@@ -197,8 +197,8 @@ public class DBAccess extends SQLiteOpenHelper {
 		String sql = "SELECT "+Usage.COLUMN_NAME_PRICE+" " +
 				"FROM "+Usage.TABLE_NAME+" " +
 				"WHERE "+Usage.COLUMN_NAME_FK_CAR+"=? " +
-				"ORDER BY "+Usage.COLUMN_NAME_DATE+" " +
-				"DESC LIMIT 1";
+                "ORDER BY "+Usage.COLUMN_NAME_DATE+" DESC, " + Usage.COLUMN_NAME_ID + " DESC " +
+				"LIMIT 1";
 		Cursor c = this.db.rawQuery(sql, new String[]{ Long.toString(getSelectedCarId()) });
 		
 		// Return 0 if no entry in DB
@@ -217,7 +217,7 @@ public class DBAccess extends SQLiteOpenHelper {
 	 */
 	public Cursor createEntryListViewCursor() {
 		String[] cols = new String[] {Usage.COLUMN_NAME_ID,Usage.COLUMN_NAME_DATE,Usage.COLUMN_NAME_KM,Usage.COLUMN_NAME_LITER,Usage.COLUMN_NAME_PRICE,Usage.COLUMN_NAME_FULL};
-		return db.query(Usage.TABLE_NAME, cols, Usage.COLUMN_NAME_FK_CAR+"=?", new String[]{ Long.toString(getSelectedCarId()) }, null, null, Usage.COLUMN_NAME_DATE+" DESC");
+		return db.query(Usage.TABLE_NAME, cols, Usage.COLUMN_NAME_FK_CAR+"=?", new String[]{ Long.toString(getSelectedCarId()) }, null, null, Usage.COLUMN_NAME_DATE+" DESC, "+Usage.COLUMN_NAME_ID+" DESC");
 	}
 	
 	/**
