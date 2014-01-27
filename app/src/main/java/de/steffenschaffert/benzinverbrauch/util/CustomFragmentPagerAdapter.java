@@ -8,6 +8,7 @@ package de.steffenschaffert.benzinverbrauch.util;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.view.ViewGroup;
 
 import de.steffenschaffert.benzinverbrauch.fragments.CalculateUsageFragment;
 import de.steffenschaffert.benzinverbrauch.fragments.ListEntriesFragment;
@@ -32,6 +33,16 @@ public class CustomFragmentPagerAdapter extends FragmentPagerAdapter{
         }
 
         return null;
+    }
+
+    @Override
+    public void setPrimaryItem (ViewGroup container, int position, Object object) {
+        // Refresh Fragment if possible
+        if (object instanceof OnRefreshListener) {
+            ((OnRefreshListener)object).onRefresh();
+        }
+
+        super.setPrimaryItem(container, position, object);
     }
 
     @Override
