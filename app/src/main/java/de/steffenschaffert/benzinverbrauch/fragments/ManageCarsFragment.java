@@ -14,6 +14,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -65,9 +66,10 @@ public class ManageCarsFragment extends Fragment implements OnClickListener {
 		Cursor cursor = dbAccess.createCarListViewCursor();
 
 		// Create adapter from cursor
-		String[] showCols = new String[] { DBAccess.Car.COLUMN_NAME_NAME };
-		int[] showViews = new int[] { R.id.textViewListCarName };
+		String[] showCols = new String[] { DBAccess.Car.COLUMN_NAME_NAME, DBAccess.Car.COLUMN_NAME_MILEAGE };
+		int[] showViews = new int[] { R.id.textViewListCarName, R.id.textViewListCarMileage };
 		adapter = new SimpleCursorAdapter(parent, R.layout.list_item_car, cursor, showCols, showViews);
+        adapter.setViewBinder(viewBinder);
 
 		// Connect ListView and adapter
 		ListView listView = (ListView) parent.findViewById(R.id.listViewCars);
@@ -82,6 +84,34 @@ public class ManageCarsFragment extends Fragment implements OnClickListener {
 		// Update textView with current Car
 		updateCurrentCar();
 	}
+
+    // Formats ListView entries
+    private SimpleCursorAdapter.ViewBinder viewBinder = new SimpleCursorAdapter.ViewBinder() {
+        /**
+         * @param view
+         *            view element for current column
+         * @param cursor
+         *            points to current line
+         * @param columnIndex
+         *            column index for selected data (index is 0)
+         */
+        @Override
+        public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+            switch (columnIndex) {
+                case 1: // Car name
+                    String name = cursor.getString(columnIndex);
+                    ((TextView) view).setText(name);
+                    break;
+                case 2: // Car mileage
+                    ((TextView) view).setText(String.format("(%.1f km)", cursor.getDouble(columnIndex)));
+                    break;
+                default:
+                    ((TextView) view).setText(cursor.getString(columnIndex));
+                    break;
+            }
+            return true;
+        }
+    };
 
 	private void updateCurrentCar() {
 		// Get ID from SharedPrefs and query car name
@@ -122,6 +152,9 @@ public class ManageCarsFragment extends Fragment implements OnClickListener {
 		case R.id.context_rename:
 			renameCar(info.id);
 			return true;
+        case R.id.context_change_mileage:
+            changeMileage(info.id);
+            return true;
 		default:
 			return super.onContextItemSelected(item);
 		}
@@ -176,6 +209,24 @@ public class ManageCarsFragment extends Fragment implements OnClickListener {
 			dialogBuilder.create().show();
 		}
 	}
+
+    private void changeMileage(long id) {
+        // create edittext
+        EditText editTextChangeMileage = new EditText(parent);
+        editTextChangeMileage.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL); // Enable only decimal input
+        editTextChangeMileage.setText(String.format("%.1f", dbAccess.getCarMileage(id)));
+
+        // create listener
+        OnClickListenerChangeMileageDialog clickListenerChangeMileageDialog = new OnClickListenerChangeMileageDialog(id, editTextChangeMileage);
+
+        // build and show dialog
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(parent);
+        dialogBuilder.setTitle(parent.getString(R.string.manageCars_newMileage));
+        dialogBuilder.setView(editTextChangeMileage);
+        dialogBuilder.setPositiveButton(parent.getString(R.string.manageCars_buttonSave), clickListenerChangeMileageDialog);
+        dialogBuilder.setNegativeButton(parent.getString(R.string.manageCars_buttonCancel), null);
+        dialogBuilder.create().show();
+    }
 
 	private void updateListView() {
 		adapter.changeCursor(dbAccess.createCarListViewCursor());
@@ -268,4 +319,27 @@ public class ManageCarsFragment extends Fragment implements OnClickListener {
 			}
 		}
 	}
+
+    // Custom listener to supply car id and edittext
+    private class OnClickListenerChangeMileageDialog implements DialogInterface.OnClickListener {
+        private long id = -1;
+        private EditText editTextChangeMileage;
+
+        public OnClickListenerChangeMileageDialog(long id, EditText editTextChangeMileage) {
+            this.id = id;
+            this.editTextChangeMileage = editTextChangeMileage;
+        }
+
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            if (editTextChangeMileage != null) {
+                String newMileage = editTextChangeMileage.getText().toString();
+                if (!newMileage.equals("")) {
+                    dbAccess.setCarMileage(id, newMileage);
+                    updateListView();
+                    updateCurrentCar();// name might have changed
+                }
+            }
+        }
+    }
 }

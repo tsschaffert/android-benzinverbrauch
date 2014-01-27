@@ -4,4 +4,6 @@
           android:title="@string/context_delete"/>
     <item android:id="@+id/context_rename"
           android:title="@string/context_rename"/>
+    <item android:id="@+id/context_change_mileage"
+        android:title="@string/context_change_mileage"/>
 </menu>

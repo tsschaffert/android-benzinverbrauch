@@ -5,14 +5,14 @@
  */
 package de.steffenschaffert.benzinverbrauch.fragments;
 
-import java.util.Calendar;
-
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,7 +23,11 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Calendar;
+
 import de.steffenschaffert.benzinverbrauch.R;
 import de.steffenschaffert.benzinverbrauch.config.BenzinVerbrauchConfig;
 import de.steffenschaffert.benzinverbrauch.util.DBAccess;
@@ -33,6 +37,7 @@ public class AddEntryFragment extends Fragment implements OnClickListener {
 	public static final String TAG = "AddEntryFragment";
 
 	private long id = -1;
+    private boolean useMileageForCalculation = false;
 	private DatePickerDialog datePickerDialog;
 	private DateFormatter dateFormatter;
 	private Activity parent;
@@ -75,6 +80,16 @@ public class AddEntryFragment extends Fragment implements OnClickListener {
 			// Set default date (today)
 			Calendar cal = Calendar.getInstance();
 			editTextDate.setText(dateFormatter.formatDateToReadableString(cal.getTime()));
+
+            // Change field description if mileage is used for calculation
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(parent);
+            useMileageForCalculation = prefs.getBoolean(parent.getString(R.string.prefDataEntryMethod_key), false);
+            if(useMileageForCalculation) {
+                TextView textViewKm = (TextView)parent.findViewById(R.id.textViewKm);
+                EditText editTextKm = (EditText)parent.findViewById(R.id.editTextKm);
+                textViewKm.setText(parent.getString(R.string.addEntry_kmMileage));
+                editTextKm.setHint(parent.getString(R.string.addEntry_kmMileage));
+            }
 		} else { // Edit entry
 			loadEntry();
 		}
@@ -182,6 +197,35 @@ public class AddEntryFragment extends Fragment implements OnClickListener {
 			date = dateFormatter.convertStringFromReadableFormatToDatabaseFormat(date);
 
 			if (id == -1) { // New entry
+                // Check whether distance driven needs to be calculated from mileage
+                if (useMileageForCalculation) {
+                    try {
+                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(parent);
+                        long selectedCarId = prefs.getLong(parent.getString(R.string.prefSelectedCar_key), DBAccess.ID_STANDARD_CAR);
+
+                        // Calculate distance
+                        double lastMileage = db.getCarMileage(selectedCarId);
+                        double kmDouble = Double.parseDouble(km);
+                        kmDouble = kmDouble - lastMileage;
+
+                        // Validate
+                        if(kmDouble < 0) {
+                            // Input makes no sense
+                            Toast.makeText(parent, parent.getString(R.string.addEntry_errorCalculatedDistanceNegative), Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
+                        // Save input as last mileage
+                        db.setCarMileage(selectedCarId, km);
+
+                        // Set distance driven
+                        km = ""+kmDouble;
+                    }
+                    catch (NumberFormatException e) {
+                        Log.e(TAG, "Number parsing failed for mileage. Could not calculate distance driven.");
+                    }
+                }
+
 				db.saveEntry(date, km, fuel, price, full);
 			} else { // Update entry
 				db.updateEntry(Long.toString(id), date, km, fuel, price, full);

@@ -9,12 +9,14 @@
         android:key="@string/prefDateFormat_key"
         android:title="@string/prefDateFormat_title" />
 
-    <CheckBoxPreference
+    <SwitchPreference
         android:defaultValue="@string/prefDataEntryMethod_defaultValue"
         android:summaryOff="@string/prefDataEntryMethod_summaryOff"
         android:summaryOn="@string/prefDataEntryMethod_summaryOn"
         android:key="@string/prefDataEntryMethod_key"
         android:title="@string/prefDataEntryMethod_title"
+        android:switchTextOff="@string/prefDataEntryMethod_switchTextOff"
+        android:switchTextOn="@string/prefDataEntryMethod_switchTextOn"
         />
 
 </PreferenceScreen>

@@ -23,11 +23,12 @@ import android.util.Log;
 public class DBAccess extends SQLiteOpenHelper {
 	public static final String TAG = "DBAccess";//Logging
 	public static final long ID_STANDARD_CAR = 0;
+    public static final int DB_VERSION = 3;
 	
 	private SQLiteDatabase db;
 	private Context context;
 
-	public static class Usage {
+    public static class Usage {
 		public static final String TABLE_NAME = "verbrauch";
 		public static final String COLUMN_NAME_ID = "_id";
 		public static final String COLUMN_NAME_DATE = "date";
@@ -42,10 +43,11 @@ public class DBAccess extends SQLiteOpenHelper {
 		public static final String TABLE_NAME = "auto";
 		public static final String COLUMN_NAME_ID = "_id";
 		public static final String COLUMN_NAME_NAME = "name";
+        public static final String COLUMN_NAME_MILEAGE = "mileage";
 	}
 	
 	public DBAccess(Context activity, String dbName) {
-		super(activity,dbName,null,2);
+		super(activity,dbName,null,DB_VERSION);
 		this.db=getWritableDatabase();
 		this.context=activity;
 		onCreate(db);
@@ -69,7 +71,8 @@ public class DBAccess extends SQLiteOpenHelper {
 			sql="CREATE TABLE IF NOT EXISTS " + Car.TABLE_NAME +
 					" (" +
 						Car.COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-						Car.COLUMN_NAME_NAME + " TEXT NOT NULL" +
+						Car.COLUMN_NAME_NAME + " TEXT NOT NULL," +
+                        Car.COLUMN_NAME_MILEAGE + " REAL NOT NULL" +
 					")";
 			db.execSQL(sql);
 			
@@ -79,6 +82,7 @@ public class DBAccess extends SQLiteOpenHelper {
 				ContentValues data = new ContentValues();
 				data.put(Car.COLUMN_NAME_ID, ID_STANDARD_CAR);
 				data.put(Car.COLUMN_NAME_NAME,"DEFAULT");
+                data.put(Car.COLUMN_NAME_MILEAGE, "0");
 				db.insert(Car.TABLE_NAME, null, data);
 			}
 		} catch(Exception e) {
@@ -89,11 +93,17 @@ public class DBAccess extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		if(oldVersion == 1 && newVersion == 2) {
+		if(oldVersion == 1 && newVersion >= 2) {
 			String sql="ALTER TABLE " + Usage.TABLE_NAME +
 					" ADD COLUMN " + Usage.COLUMN_NAME_FK_CAR + " INTEGER NOT NULL DEFAULT 0";
 			db.execSQL(sql);
 		}
+        // Added column mileage in car table in version 3
+        if(oldVersion <= 2 && newVersion == 3) {
+            String sql="ALTER TABLE " + Car.TABLE_NAME +
+                    " ADD COLUMN " + Car.COLUMN_NAME_MILEAGE + " REAL NOT NULL DEFAULT 0";
+            db.execSQL(sql);
+        }
 	}
 	
 	/**
@@ -225,7 +235,7 @@ public class DBAccess extends SQLiteOpenHelper {
 	 * @return
 	 */
 	public Cursor createCarListViewCursor() {
-		String[] cols = new String[] {Car.COLUMN_NAME_ID,Car.COLUMN_NAME_NAME};
+		String[] cols = new String[] {Car.COLUMN_NAME_ID,Car.COLUMN_NAME_NAME,Car.COLUMN_NAME_MILEAGE};
 		return db.query(Car.TABLE_NAME, cols, null, null, null, null, Car.COLUMN_NAME_ID);
 	}
 	
@@ -245,6 +255,7 @@ public class DBAccess extends SQLiteOpenHelper {
 	public void addCar(String name) {
 		ContentValues data = new ContentValues();
 		data.put(Car.COLUMN_NAME_NAME,name);
+        data.put(Car.COLUMN_NAME_MILEAGE,"0");
 		db.insert(Car.TABLE_NAME, null, data);
 	}
 	
@@ -265,6 +276,24 @@ public class DBAccess extends SQLiteOpenHelper {
 		c.close();
 		return ret;
 	}
+
+    /**
+     * Get car mileage
+     * @param id
+     * @return
+     */
+    public double getCarMileage(long id) {
+        Cursor c = db.query(Car.TABLE_NAME, new String[]{Car.COLUMN_NAME_MILEAGE}, Car.COLUMN_NAME_ID+"=?", new String[]{Long.toString(id)}, null, null, null);
+
+        //Return 0 if car doesn't exist
+        if(!c.moveToFirst()) {
+            return 0;
+        }
+
+        double ret = c.getDouble(0);
+        c.close();
+        return ret;
+    }
 	
 	/**
 	 * Deletes selected car and all connected entries. 
@@ -297,6 +326,20 @@ public class DBAccess extends SQLiteOpenHelper {
 		
 		db.update(Car.TABLE_NAME, data, Car.COLUMN_NAME_ID+"=?", whereArgs);
 	}
+
+    /**
+     * Sets the current mileage for the car
+     * @param id
+     * @param mileage
+     */
+    public void setCarMileage(long id, String mileage) {
+        ContentValues data = new ContentValues();
+        data.put(Car.COLUMN_NAME_MILEAGE,mileage);
+
+        String[] whereArgs = {Long.toString(id)};
+
+        db.update(Car.TABLE_NAME, data, Car.COLUMN_NAME_ID+"=?", whereArgs);
+    }
 	
 	/**
 	 * Cheks if car exists
@@ -336,7 +379,7 @@ public class DBAccess extends SQLiteOpenHelper {
 	 */
 	private long getSelectedCarId() {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		return prefs.getLong(context.getString(R.string.prefSelectedCar_key), 0);
+		return prefs.getLong(context.getString(R.string.prefSelectedCar_key), ID_STANDARD_CAR);
 	}
 
 	public synchronized void close() {

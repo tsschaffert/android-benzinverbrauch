@@ -8,6 +8,7 @@
     <string name="general_delete">Löschen</string>
     
     <string name="context_rename">Umbenennen</string>
+    <string name="context_change_mileage">Kilometerstand ändern</string>
     <string name="action_settings">Einstellungen</string>
     <string name="action_add">Neuer Eintrag</string>
     <string name="action_manageCars">Autos verwalten</string>
@@ -20,6 +21,7 @@
     
     <string name="addEntry_date">Datum</string>
     <string name="addEntry_km">Strecke (km)</string>
+    <string name="addEntry_kmMileage">Kilometerstand</string>
     <string name="addEntry_fuelAmount">Benzinmenge (l)</string>
     <string name="addEntry_price">Preis (Cent/l)</string>
     <string name="addEntry_tankFull">Vollgetankt?</string>
@@ -27,6 +29,7 @@
     <string name="addEntry_buttonDatepicker">Pick</string>
     <string name="addEntry_errorEmptyFields">Bitte füllen Sie alle Felder aus.</string>
     <string name="addEntry_errorDateFormat">Das Datum muss die in den Einstellungen gewählte Form haben.</string>
+    <string name="addEntry_errorCalculatedDistanceNegative">Gefahrene Strecke wird negativ, überprüfen Sie den eingegebenen Kilometerstand.</string>
     
     <string name="calculateUsage_tab">Berechnen</string>
     <string name="calculateUsage_distance">Strecke (km):</string>
@@ -36,16 +39,23 @@
     <string name="calculateUsage_calculatedUsage">Geschätzter Verbrauch: %.2f l</string>
     <string name="calculateUsage_calculatedPrice">Geschätzter Preis: %.2f €</string>
     
-    <string name="manageCars_chooseCar">Auto auswählen:</string>
+    <string name="manageCars_chooseCar">Auto auswählen (lange drücken für weitere Optionen):</string>
     <string name="manageCars_addCar">Auto hinzufügen:</string>
     <string name="manageCars_currentCar">Aktuell gewähltes Auto: %s</string>
     <string name="manageCars_newName">Neuer Name:</string>
     <string name="manageCars_hintCarName">Name des Autos</string>
     <string name="manageCars_errorCannotDelete">Dieses Auto kann nicht gelöscht werden.</string>
     <string name="manageCars_confirmationDeleteCar">Wenn Sie das Auto löschen, dann werden alle damit verknüpften Einträge ebenfalls gelöscht! Sind Sie sicher, dass Sie das Auto löschen wollen?</string>
-    
+    <string name="manageCars_newMileage">Neuer Kilometerstand:</string>
+
     <string name="prefDateFormat_title">Datumsformat</string>
     <string name="prefDateFormat_dialogTitle">Datumsformat</string>
     <string name="prefDateFormat_defaultValue">GERMAN</string>
+
+    <string name="prefDataEntryMethod_title">Eingabemethode</string>
+    <string name="prefDataEntryMethod_summaryOff">Gefahrene Strecke benutzen</string>
+    <string name="prefDataEntryMethod_summaryOn">Kilometerstand benutzen</string>
+    <string name="prefDataEntryMethod_switchTextOn">KM-Stand</string>
+    <string name="prefDataEntryMethod_switchTextOff">Strecke</string>
 
 </resources>
